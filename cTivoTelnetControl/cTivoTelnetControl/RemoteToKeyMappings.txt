@@ -16,7 +16,7 @@ Mute	o
 VolumeUp	p	
 VolumeDown	q	
 ChannelUp	r	IRCODE CHANNELUP
-ChannelDown	s	ICODE CHANNELDOWN
+ChannelDown	s	IRCODE CHANNELDOWN
 Record	t	IRCODE RECORD
 Play	u	IRCODE PLAY
 Pause	v	IRCODE PAUSE
