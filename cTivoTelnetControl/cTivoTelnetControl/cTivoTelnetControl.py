@@ -1,1 +1,54 @@
-print('Hello World')
+"""
+cTivoTelnetControl - a solution for controlling a TiVo over the internet
+Converts a single key press into a command for a TiVo box
+Charles Machalow - MIT License
+"""
+
+import telnetlib  #for telnet connection
+import os         #for os.linesep (\n vs \r\n)
+import sys        #for args
+import getch      #local file for getch in Windows and Unix
+
+
+#makes connection to the given TiVo ip, port on default TiVo port
+#returns the telnetlib.Telnet object, used to hold the connection
+def connect(ip, port=31339):
+    tn = telnetlib.Telnet(ip, str(port))
+    return tn
+
+#returns a dictionary from keychar to telnet command
+#expects a RemoteToKeyMappings.txt
+def getKeyToTelnet():
+    d = {}
+    with open('RemoteToKeyMappings.txt', 'r') as file:
+        for line in file: 
+            vals = line.split('\t')
+            #vals[0] is the remote button, not used by code, makes
+            #the file more human readable
+            d[vals[1]] = vals[2].rstrip()
+    return d
+
+#main
+if __name__ == "__main__":
+    if len(sys.argv) == 3:
+        tn = connect(sys.argv[1], sys.argv[2])
+    elif len(sys.argv) == 2:
+        tn = connect(sys.argv[1])
+    else:
+        print("Incorrect script args")
+        print("usage: python cTivoTelnetControl.py ip <port=31339>")
+        sys.exit(0)
+
+    keydict = getKeyToTelnet()
+
+    print("listening for keypresses...")
+
+    #go in key listening loop, send command as needed
+    while True:
+        c = getch.getch().decode("ascii")
+        if c not in keydict:
+            print(c + " not in keydict, exiting...")
+            break
+        telnet_cmd = keydict[c] + os.linesep
+        print ("recv'd \"" + c + "\" sending:" + telnet_cmd + " to sys.argv[1]")
+        tn.write(str.encode(telnet_cmd))
