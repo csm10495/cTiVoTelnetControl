@@ -5,7 +5,6 @@ Charles Machalow - MIT License
 """
 
 import telnetlib  #for telnet connection
-import os         #for os.linesep (\n vs \r\n)
 import sys        #for args
 import getch      #local file for getch in Windows and Unix
 import socket     #for socket.error
@@ -65,7 +64,7 @@ if __name__ == "__main__":
             print(c + " not in keydict, exiting...")
             break
 
-        telnet_cmd = keydict[c] + os.linesep
+        telnet_cmd = keydict[c] + "\r\n"
         print ("recv'd \"" + c + "\" sending:" + telnet_cmd + " to " + str(ip) + ":" + str(port))
 
         try:
