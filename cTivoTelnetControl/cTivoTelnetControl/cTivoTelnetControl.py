@@ -66,7 +66,7 @@ if __name__ == "__main__":
             break
 
         telnet_cmd = keydict[c] + os.linesep
-        print ("recv'd \"" + c + "\" sending:" + telnet_cmd + " to sys.argv[1]")
+        print ("recv'd \"" + c + "\" sending:" + telnet_cmd + " to " + str(ip) + ":" + str(port))
 
         try:
             tn.write(str.encode(telnet_cmd))
